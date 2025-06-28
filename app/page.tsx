@@ -4,17 +4,18 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, MapPin, ExternalLink, ChevronRight, Plus, Settings } from "lucide-react"
+import { Calendar, Clock, MapPin, ExternalLink, ChevronRight, Plus, Settings, Shield, Users } from "lucide-react"
 import Link from "next/link"
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
 
 const conferences = [
   {
     id: 4,
-    name: "Elsevier Impact Conference 2025",
-    subtitle: "Research • Innovation • Impact",
+    name: "HireWire 2025",
+    subtitle: "Product • UI/UX • Data",
     status: "current",
     dates: "Jul 15-17, 2025",
-    location: "Chicago, USA",
+    location: "San Francisco, CA",
     attendees: 3500,
     sessions: 180,
     companies: 550,
@@ -198,9 +199,21 @@ export default function HomePage() {
       {/* Header */}
       <div className="bg-white px-6 py-4 border-b border-gray-100">
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm">
-            <Settings className="w-5 h-5" />
-          </Button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Settings className="w-5 h-5" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-40 p-1" align="start">
+              <Link href="/admin">
+                <Button variant="ghost" className="w-full justify-start text-sm">
+                  <Shield className="w-4 h-4 mr-2" />
+                  Admin
+                </Button>
+              </Link>
+            </PopoverContent>
+          </Popover>
           <h1 className="text-lg font-semibold">HireWire</h1>
           <div className="w-10"></div>
         </div>
@@ -317,9 +330,7 @@ export default function HomePage() {
             <Link href="/networking">
               <Card className="border-0 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                    <div className="w-4 h-4 bg-purple-600 rounded-full"></div>
-                  </div>
+                  <Users className="w-8 h-8 text-purple-600 mx-auto mb-2" />
                   <h3 className="font-medium text-gray-900">Network</h3>
                   <p className="text-xs text-gray-600">Meet people</p>
                 </CardContent>

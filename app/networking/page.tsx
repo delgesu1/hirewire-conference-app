@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Search, Filter, MapPin, Heart, X, MessageCircle, Github, Linkedin, RotateCcw } from "lucide-react"
 import Link from "next/link"
-import { BottomNav } from "@/components/bottom-nav"
 
 const profiles = [
   {
@@ -80,7 +79,7 @@ const filterOptions = {
   industry: ["All", "Tech", "Finance", "Healthcare", "E-commerce", "Media"],
   level: ["All", "Entry", "Mid-level", "Senior", "Executive"],
   country: ["All", "USA", "UK", "Canada", "Germany", "Australia"],
-  role: ["All", "Job Seeker", "Recruiter"],
+  role: ["All", "Job Seeker", "Recruiter", "Attendee"],
 }
 
 export default function NetworkingPage() {
@@ -136,7 +135,7 @@ export default function NetworkingPage() {
           <Link href="/">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
+              Home
             </Button>
           </Link>
           <h1 className="text-lg font-semibold">Networking</h1>
@@ -380,7 +379,7 @@ export default function NetworkingPage() {
         </div>
       )}
 
-      <BottomNav />
+      
     </div>
   )
 }

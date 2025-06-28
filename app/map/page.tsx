@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, MapPin, Clock, Users, Filter } from "lucide-react"
 import Link from "next/link"
-import { BottomNav } from "@/components/bottom-nav"
 
 const venues = [
   { id: 1, name: "Main Auditorium", x: 15,   y: 24.2, capacity: 1000 }, // moved further up 10%, left 5%
@@ -100,7 +99,7 @@ export default function MapPage() {
           <Link href="/">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
+              Home
             </Button>
           </Link>
           <h1 className="text-lg font-semibold">Map</h1>
@@ -221,7 +220,7 @@ export default function MapPage() {
         </div>
       )}
 
-      <BottomNav />
+      
     </div>
   )
 }

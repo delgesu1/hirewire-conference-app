@@ -7,317 +7,275 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Plus, Edit, Trash2, Send, Users, Calendar, Bell, Shield } from "lucide-react"
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { 
+  ArrowLeft, 
+  Plus, 
+  Edit, 
+  Trash2, 
+  Send, 
+  Users, 
+  Calendar, 
+  Bell, 
+  Shield,
+  Settings,
+  CheckCircle,
+  Clock,
+  UserCheck,
+  TrendingUp,
+  Star
+} from "lucide-react"
 import Link from "next/link"
 
 const events = [
   {
     id: 1,
-    title: "Keynote: The Future of Design Systems",
-    speaker: "Sarah Chen",
-    time: "09:00 - 10:00",
-    location: "Main Auditorium",
-    attendees: 850,
+    title: "The Future of AI in Design",
+    speaker: "Sarah Chen, Meta",
+    date: "Nov 15",
+    time: "9:00 AM",
+    location: "Main Hall",
+    registered: 487,
+    capacity: 500,
     status: "Active",
   },
   {
     id: 2,
-    title: "Hands-on: Figma Advanced Techniques",
-    speaker: "Marcus Rodriguez",
-    time: "10:30 - 12:00",
-    location: "Workshop Room A",
-    attendees: 120,
-    status: "Active",
-  },
-  {
-    id: 3,
-    title: "Data Visualization Best Practices",
-    speaker: "Dr. Emily Watson",
-    time: "11:00 - 12:30",
-    location: "Workshop Room B",
-    attendees: 110,
-    status: "Draft",
+    title: "Prototyping with Figma Variables",
+    speaker: "Alex Rodriguez, Adobe",
+    date: "Nov 15",
+    time: "11:00 AM",
+    location: "Workshop A",
+    registered: 78,
+    capacity: 80,
+    status: "Almost Full",
   },
 ]
 
-const users = [
+const recentUsers = [
   {
     id: 1,
-    name: "Alex Johnson",
-    email: "alex@example.com",
-    role: "Job Seeker",
-    status: "Active",
-    joinDate: "2024-01-15",
+    name: "John Doe",
+    email: "john@example.com",
+    status: "pending",
   },
   {
     id: 2,
-    name: "Sarah Chen",
-    email: "sarah@google.com",
-    role: "Speaker",
-    status: "Active",
-    joinDate: "2024-01-10",
-  },
-  {
-    id: 3,
-    name: "Spam User",
-    email: "spam@fake.com",
-    role: "Job Seeker",
-    status: "Flagged",
-    joinDate: "2024-01-20",
+    name: "Jane Smith",
+    email: "jane@company.com",
+    status: "pending",
   },
 ]
 
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState("events")
-  const [notification, setNotification] = useState({
-    title: "",
-    message: "",
-    type: "info",
-  })
+  const [notificationTitle, setNotificationTitle] = useState("")
+  const [notificationMessage, setNotificationMessage] = useState("")
 
-  const tabs = [
-    { id: "events", label: "Events", icon: Calendar },
-    { id: "users", label: "Users", icon: Users },
-    { id: "notifications", label: "Notifications", icon: Bell },
-  ]
-
-  const sendNotification = () => {
-    if (notification.title && notification.message) {
-      console.log("Sending notification:", notification)
-      setNotification({ title: "", message: "", type: "info" })
-      // Here you would send the notification to all users
+  const handleSendNotification = () => {
+    if (notificationTitle.trim() && notificationMessage.trim()) {
+      // Handle notification sending logic here
+      console.log("Sending notification:", { title: notificationTitle, message: notificationMessage })
+      setNotificationTitle("")
+      setNotificationMessage("")
     }
   }
 
-  const toggleUserStatus = (userId: number) => {
-    console.log("Toggling user status for user:", userId)
-    // Here you would update the user status
+  const handleApproveUser = (userId: number) => {
+    console.log("Approving user:", userId)
   }
 
-  const deleteEvent = (eventId: number) => {
-    console.log("Deleting event:", eventId)
-    // Here you would delete the event
+  const handleBlockUser = (userId: number) => {
+    console.log("Blocking user:", userId)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-900 text-white p-6">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 px-4 py-3">
-        <div className="flex items-center justify-between">
-          <Link href="/">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center gap-3">
+          <Settings className="w-8 h-8" />
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        </div>
+        <Link href="/messages">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+            <ArrowLeft className="w-6 h-6" />
+          </Button>
+        </Link>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 mb-10">
+        <Card className="bg-gray-800 border-gray-700 flex flex-col items-center justify-center text-center">
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-white mb-2">2,847</div>
+            <div className="text-gray-400 text-sm">Active Users</div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gray-800 border-gray-700 flex flex-col items-center justify-center text-center">
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-white mb-2">156</div>
+            <div className="text-gray-400 text-sm">Events Scheduled</div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gray-800 border-gray-700 flex flex-col items-center justify-center text-center">
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-white mb-2">1,423</div>
+            <div className="text-gray-400 text-sm">Connections Made</div>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-gray-800 border-gray-700 flex flex-col items-center justify-center text-center">
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-white mb-2">89%</div>
+            <div className="text-gray-400 text-sm">Satisfaction Rate</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Event Management */}
+      <Card className="bg-gray-800 border-gray-700 mb-8">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white text-xl">Event Management</CardTitle>
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Event
             </Button>
-          </Link>
-          <h1 className="text-lg font-semibold flex items-center">
-            <Shield className="w-5 h-5 mr-2" />
-            Admin Dashboard
-          </h1>
-          <div></div>
-        </div>
-      </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {events.map((event) => (
+              <div key={event.id} className="bg-gray-700 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-white font-semibold">{event.title}</h3>
+                  <div className="flex gap-2">
+                    <Button variant="ghost" size="icon" className="text-blue-400 hover:bg-gray-600">
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="text-red-400 hover:bg-gray-600">
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+                <div className="text-gray-300 text-sm mb-2">
+                  {event.date}, {event.time} • {event.location}
+                </div>
+                <div className="text-gray-300 text-sm mb-2">
+                  Speaker: {event.speaker}
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm">
+                    <span className="text-green-400 font-medium">{event.registered} Registered</span>
+                    <span className="text-gray-400 ml-4">Capacity: {event.capacity}</span>
+                  </div>
+                  <Badge variant={event.status === "Almost Full" ? "destructive" : "default"} className="text-xs">
+                    {event.status}
+                  </Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
-      {/* Tab Navigation */}
-      <div className="bg-white border-b border-gray-200 px-4">
-        <div className="flex space-x-1">
-          {tabs.map((tab) => {
-            const Icon = tab.icon
-            return (
-              <Button
-                key={tab.id}
-                variant={activeTab === tab.id ? "default" : "ghost"}
-                onClick={() => setActiveTab(tab.id)}
-                className="flex items-center"
-              >
-                <Icon className="w-4 h-4 mr-2" />
-                {tab.label}
-              </Button>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="px-4 py-6">
-        {/* Events Tab */}
-        {activeTab === "events" && (
-          <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">Event Management</h2>
-              <Button>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Event
+      {/* User Management */}
+      <Card className="bg-gray-800 border-gray-700 mb-8">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white text-xl">User Management</CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-gray-300 font-medium">Recent Registrations</h4>
+              <Button variant="ghost" className="text-blue-400 text-sm">
+                View All
               </Button>
             </div>
-
-            <div className="space-y-4">
-              {events.map((event) => (
-                <Card key={event.id} className="border-0 shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{event.title}</h3>
-                        <p className="text-gray-600">{event.speaker}</p>
-                        <p className="text-sm text-gray-500">
-                          {event.time} • {event.location}
-                        </p>
-                      </div>
-                      <Badge variant={event.status === "Active" ? "default" : "secondary"}>{event.status}</Badge>
+            <div className="space-y-3">
+              {recentUsers.map((user) => (
+                <div key={user.id} className="flex items-center justify-between bg-gray-700 rounded-lg p-3">
+                  <div className="flex items-center gap-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarFallback className="bg-gray-600 text-white text-sm">
+                        {user.name.split(' ').map(n => n[0]).join('')}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <div className="text-white text-sm font-medium">{user.name}</div>
+                      <div className="text-gray-400 text-xs">{user.email}</div>
                     </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-sm text-gray-600">
-                        <Users className="w-4 h-4 mr-1" />
-                        {event.attendees} attendees
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button size="sm" variant="outline">
-                          <Edit className="w-4 h-4 mr-2" />
-                          Edit
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={() => deleteEvent(event.id)}>
-                          <Trash2 className="w-4 h-4 mr-2" />
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      className="bg-green-600 hover:bg-green-700 text-xs px-3 py-1"
+                      onClick={() => handleApproveUser(user.id)}
+                    >
+                      Approve
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="destructive" 
+                      className="text-xs px-3 py-1"
+                      onClick={() => handleBlockUser(user.id)}
+                    >
+                      Block
+                    </Button>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        )}
+        </CardContent>
+      </Card>
 
-        {/* Users Tab */}
-        {activeTab === "users" && (
-          <div className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">User Management</h2>
-              <div className="text-sm text-gray-600">{users.length} total users</div>
+      {/* Send Notification */}
+      <Card className="bg-gray-800 border-gray-700 flex flex-col items-center justify-center text-center">
+        <CardHeader>
+          <CardTitle className="text-white text-xl">Send Notification</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="notificationTitle" className="text-gray-300 text-sm">
+                Notification Title
+              </Label>
+              <Input
+                id="notificationTitle"
+                placeholder="e.g., Don't miss today's keynote!"
+                value={notificationTitle}
+                onChange={(e) => setNotificationTitle(e.target.value)}
+                className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 mt-1"
+              />
             </div>
-
-            <div className="space-y-4">
-              {users.map((user) => (
-                <Card key={user.id} className="border-0 shadow-lg">
-                  <CardContent className="p-6">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-lg">{user.name}</h3>
-                        <p className="text-gray-600">{user.email}</p>
-                        <p className="text-sm text-gray-500">Joined: {user.joinDate}</p>
-                      </div>
-                      <div className="flex flex-col items-end space-y-2">
-                        <Badge variant={user.status === "Active" ? "default" : "destructive"}>{user.status}</Badge>
-                        <Badge variant="outline">{user.role}</Badge>
-                      </div>
-                    </div>
-
-                    <div className="flex space-x-2">
-                      <Button
-                        size="sm"
-                        variant={user.status === "Active" ? "destructive" : "default"}
-                        onClick={() => toggleUserStatus(user.id)}
-                      >
-                        {user.status === "Active" ? "Disable" : "Enable"}
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        View Profile
-                      </Button>
-                      <Button size="sm" variant="outline">
-                        Send Message
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div>
+              <Label htmlFor="notificationMessage" className="text-gray-300 text-sm">
+                Message
+              </Label>
+              <Textarea
+                id="notificationMessage"
+                placeholder="Enter your message here..."
+                value={notificationMessage}
+                onChange={(e) => setNotificationMessage(e.target.value)}
+                className="bg-gray-700 border-gray-600 text-white placeholder-gray-400 mt-1 min-h-[100px]"
+              />
             </div>
+            <Button 
+              onClick={handleSendNotification} 
+              disabled={!notificationTitle.trim() || !notificationMessage.trim()}
+              className="bg-red-600 hover:bg-red-700 w-full"
+            >
+              <Send className="w-4 h-4 mr-2" />
+              Send Notification
+            </Button>
           </div>
-        )}
-
-        {/* Notifications Tab */}
-        {activeTab === "notifications" && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-semibold">Push Notifications</h2>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Send Notification to All Users</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="notificationTitle">Title</Label>
-                  <Input
-                    id="notificationTitle"
-                    value={notification.title}
-                    onChange={(e) => setNotification((prev) => ({ ...prev, title: e.target.value }))}
-                    placeholder="Notification title..."
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="notificationMessage">Message</Label>
-                  <Textarea
-                    id="notificationMessage"
-                    value={notification.message}
-                    onChange={(e) => setNotification((prev) => ({ ...prev, message: e.target.value }))}
-                    placeholder="Notification message..."
-                    rows={4}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="notificationType">Type</Label>
-                  <select
-                    id="notificationType"
-                    value={notification.type}
-                    onChange={(e) => setNotification((prev) => ({ ...prev, type: e.target.value }))}
-                    className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="info">Info</option>
-                    <option value="warning">Warning</option>
-                    <option value="success">Success</option>
-                    <option value="error">Error</option>
-                  </select>
-                </div>
-
-                <Button
-                  onClick={sendNotification}
-                  disabled={!notification.title || !notification.message}
-                  className="w-full"
-                >
-                  <Send className="w-4 h-4 mr-2" />
-                  Send Notification
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Recent Notifications */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Recent Notifications</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                    <h4 className="font-medium text-blue-900">Welcome to HireWire!</h4>
-                    <p className="text-sm text-blue-700">
-                      Conference starts tomorrow. Don't forget to check your schedule!
-                    </p>
-                    <p className="text-xs text-blue-600 mt-1">Sent 2 hours ago</p>
-                  </div>
-                  <div className="p-3 bg-green-50 rounded-lg border border-green-200">
-                    <h4 className="font-medium text-green-900">Networking Event Tonight</h4>
-                    <p className="text-sm text-green-700">
-                      Join us for the opening mixer at 6 PM in the Networking Lounge.
-                    </p>
-                    <p className="text-xs text-green-600 mt-1">Sent 1 day ago</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -7,9 +7,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
-import { ArrowLeft, Camera, Save, User, Briefcase, Heart } from "lucide-react"
+import { ArrowLeft, Camera, Save, User, Briefcase, Heart, Linkedin, Github } from "lucide-react"
 import Link from "next/link"
-import { BottomNav } from "@/components/bottom-nav"
 
 const interestOptions = [
   "Design Systems",
@@ -55,6 +54,8 @@ export default function ProfilePage() {
     appearInSearch: true,
     allowMessages: true,
     role: "Job Seeker",
+    linkedin: "",
+    github: "",
   })
 
   const [selectedInterests, setSelectedInterests] = useState<string[]>(profile.interests)
@@ -215,6 +216,36 @@ export default function ProfilePage() {
                 />
               </div>
             </div>
+
+            {/* LinkedIn URL */}
+            <div>
+              <Label htmlFor="linkedin">LinkedIn Profile</Label>
+              <div className="relative">
+                <Linkedin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  id="linkedin"
+                  placeholder="https://linkedin.com/in/yourprofile"
+                  className="pl-10"
+                  value={profile.linkedin || ""}
+                  onChange={(e) => updateProfile("linkedin", e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* GitHub URL */}
+            <div>
+              <Label htmlFor="github">GitHub Profile</Label>
+              <div className="relative">
+                <Github className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  id="github"
+                  placeholder="https://github.com/yourprofile"
+                  className="pl-10"
+                  value={profile.github || ""}
+                  onChange={(e) => updateProfile("github", e.target.value)}
+                />
+              </div>
+            </div>
           </CardContent>
         </Card>
 
@@ -227,7 +258,7 @@ export default function ProfilePage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="flex flex-wrap gap-2">
               {interestOptions.map((interest) => (
                 <Button
                   key={interest}
@@ -235,13 +266,18 @@ export default function ProfilePage() {
                   size="sm"
                   onClick={() => toggleInterest(interest)}
                   disabled={!selectedInterests.includes(interest) && selectedInterests.length >= 5}
-                  className="text-xs justify-start"
+                  className="text-xs h-7 px-3 rounded-full transition-all duration-200 hover:scale-105"
                 >
                   {interest}
                 </Button>
               ))}
             </div>
-            <p className="text-sm text-gray-500 mt-2">{selectedInterests.length}/5 interests selected</p>
+            <div className="flex items-center justify-between mt-3">
+              <p className="text-sm text-gray-500">{selectedInterests.length}/5 selected</p>
+              {selectedInterests.length >= 5 && (
+                <p className="text-xs text-amber-600 font-medium">Maximum reached</p>
+              )}
+            </div>
           </CardContent>
         </Card>
 
@@ -252,9 +288,9 @@ export default function ProfilePage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="mr-4">
                 <Label htmlFor="appearInSearch">Appear in Search</Label>
-                <p className="text-sm text-gray-500">Allow others to find your profile</p>
+                <p className="text-sm text-gray-500">Allow others to find your profile. You must enable this setting to access the Network Tab.</p>
               </div>
               <Switch
                 id="appearInSearch"
@@ -264,9 +300,9 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center justify-between">
-              <div>
+              <div className="mr-4">
                 <Label htmlFor="allowMessages">Allow Messages</Label>
-                <p className="text-sm text-gray-500">Let others message you directly</p>
+                <p className="text-sm text-gray-500">Let others message you directly even if you have not matched.</p>
               </div>
               <Switch
                 id="allowMessages"
@@ -275,17 +311,7 @@ export default function ProfilePage() {
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <div>
-                <Label htmlFor="lookingForJob">Looking for Job Opportunities</Label>
-                <p className="text-sm text-gray-500">Show recruiters you're open to opportunities</p>
-              </div>
-              <Switch
-                id="lookingForJob"
-                checked={profile.lookingForJob}
-                onCheckedChange={(checked) => updateProfile("lookingForJob", checked)}
-              />
-            </div>
+
           </CardContent>
         </Card>
 
@@ -298,25 +324,39 @@ export default function ProfilePage() {
             <div className="space-y-3">
               <div className="flex items-center space-x-2">
                 <input
+                  id="attendee"
+                  className="text-blue-600"
                   type="radio"
-                  id="jobSeeker"
+                  value="Attendee"
+                  checked={profile.role === "Attendee"}
+                  onChange={(e) => updateProfile("role", e.target.value)}
                   name="role"
+                />
+                <Label htmlFor="attendee">Attendee</Label>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <input
+                  id="jobSeeker"
+                  className="text-blue-600"
+                  type="radio"
                   value="Job Seeker"
                   checked={profile.role === "Job Seeker"}
                   onChange={(e) => updateProfile("role", e.target.value)}
-                  className="text-blue-600"
+                  name="role"
                 />
                 <Label htmlFor="jobSeeker">Job Seeker</Label>
               </div>
+
               <div className="flex items-center space-x-2">
                 <input
-                  type="radio"
                   id="recruiter"
-                  name="role"
+                  className="text-blue-600"
+                  type="radio"
                   value="Recruiter"
                   checked={profile.role === "Recruiter"}
                   onChange={(e) => updateProfile("role", e.target.value)}
-                  className="text-blue-600"
+                  name="role"
                 />
                 <Label htmlFor="recruiter">Recruiter</Label>
               </div>
@@ -331,7 +371,7 @@ export default function ProfilePage() {
         </Button>
       </div>
 
-      <BottomNav />
+      
     </div>
   )
 }

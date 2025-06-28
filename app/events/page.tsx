@@ -7,14 +7,14 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { ArrowLeft, Search, Filter, Clock, MapPin, Users, Star, MessageCircle } from "lucide-react"
 import Link from "next/link"
-import { BottomNav } from "@/components/bottom-nav"
 
 const allEvents = [
   {
     id: 1,
     title: "Keynote: The Future of Design Systems",
-    speaker: "Sarah Chen",
-    company: "Google",
+    speaker: "Andrew Ng",
+    company: "DeepLearning.AI",
+    image: "/Andrew Ng.jpeg",
     time: "09:00 - 10:00",
     day: "Day 1",
     location: "Main Auditorium",
@@ -29,8 +29,9 @@ const allEvents = [
   {
     id: 2,
     title: "Hands-on: Figma Advanced Techniques",
-    speaker: "Marcus Rodriguez",
-    company: "Figma",
+    speaker: "Grant Adam",
+    company: "Apple",
+    image: "/Grant-Adam.png",
     time: "10:30 - 12:00",
     day: "Day 1",
     location: "Workshop Room A",
@@ -45,8 +46,9 @@ const allEvents = [
   {
     id: 3,
     title: "Data Visualization Best Practices",
-    speaker: "Dr. Emily Watson",
-    company: "Tableau",
+    speaker: "Golden Krishna",
+    company: "Google",
+    image: "/GoldenKrishna.png",
     time: "11:00 - 12:30",
     day: "Day 1",
     location: "Workshop Room B",
@@ -61,8 +63,9 @@ const allEvents = [
   {
     id: 4,
     title: "Speed Networking Session",
-    speaker: "HireWire Team",
-    company: "HireWire",
+    speaker: "Julie Zhuo",
+    company: "Sundial",
+    image: "/Julie_Zhuo.jpg",
     time: "12:30 - 13:30",
     day: "Day 1",
     location: "Networking Lounge",
@@ -118,47 +121,47 @@ const filterOptions = {
 const speakers = [
   {
     id: 1,
-    name: "Javier Fernando Angulo Osorio",
-    position: "Teacher",
-    department: "Department of the Faculty of Physical and Formal Sciences",
-    organization: "Universidad Católica de Santa María",
-    photo: "/javier.jpg",
+    name: "Andrew Ng",
+    position: "Co-founder",
+    department: "",
+    organization: "DeepLearning.AI",
+    photo: "/Andrew Ng.jpeg",
     country: "Peru",
     sessions: 2,
-    expertise: ["Physics", "Mathematics", "Research Methods"],
+    expertise: ["Machine Learning", "AI", "Deep Learning", "Online Education"],
     rating: 4.8
   },
   {
     id: 2,
-    name: "Kayla Bohorfoush",
-    position: "Project Manager", 
-    organization: "Henry M. Jackson Foundation",
-    photo: "/kayla.jpg",
+    name: "Adam Grant",
+    position: "Organizational Psychologist", 
+    organization: "Wharton School",
+    photo: "/Grant-Adam.png",
     country: "United States",
     sessions: 1,
-    expertise: ["Project Management", "Research Coordination", "Grant Writing"],
+    expertise: ["Organizational Psychology", "Motivation", "Generosity", "Original Thinking"],
     rating: 4.7
   },
   {
     id: 3,
-    name: "Dana Brown",
-    position: "Faculty Information Systems Administrator",
-    organization: "Georgia State University",
-    photo: "/dana.jpg",
+    name: "Golden Krishna",
+    position: "Product Design Lead",
+    organization: "Google",
+    photo: "/GoldenKrishna.png",
     country: "United States",
     sessions: 3,
-    expertise: ["Information Systems", "Academic Technology", "Data Management"],
+    expertise: ["Design Thinking", "User Experience", "Collaborative Methods"],
     rating: 4.9
   },
   {
     id: 4,
-    name: "Todd Bruns",
-    position: "Head of Scholarly Communication",
-    organization: "Eastern Illinois University",
-    photo: "/todd.jpeg",
+    name: "Julie Zhuo",
+    position: "Co-founder",
+    organization: "Sundial",
+    photo: "/Julie_Zhuo.jpg",
     country: "United States",
     sessions: 2,
-    expertise: ["Scholarly Publishing", "Academic Libraries", "Open Access"],
+    expertise: ["Product Design", "Management", "Leadership", "Systems Thinking"],
     rating: 4.6
   },
 ];
@@ -200,7 +203,7 @@ export default function EventsPage() {
           <Link href="/">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back
+              Home
             </Button>
           </Link>
           <h1 className="text-lg font-semibold">All Events</h1>
@@ -306,7 +309,6 @@ export default function EventsPage() {
                       
                       <div className="flex items-center bg-gray-100 rounded-full px-2 py-1 h-fit">
                         <Star className="w-3 h-3 text-yellow-500 mr-1" />
-                        <span className="text-xs font-medium">{speaker.rating}</span>
                       </div>
                     </div>
                     
@@ -352,8 +354,7 @@ export default function EventsPage() {
                   </p>
                 </div>
                 <div className="flex items-center ml-4">
-                  <Star className="w-4 h-4 text-yellow-500 mr-1" />
-                  <span className="text-sm font-medium">{event.rating}</span>
+                  <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                 </div>
               </div>
 
@@ -398,7 +399,7 @@ export default function EventsPage() {
         </div>
       )}
 
-      <BottomNav />
+      
     </div>
   )
 }
