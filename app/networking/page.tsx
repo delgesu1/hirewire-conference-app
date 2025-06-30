@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
+import { useSwipeable, SwipeEventData } from "react-swipeable"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -88,12 +89,42 @@ export default function NetworkingPage() {
   const [showCardBack, setShowCardBack] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [showFilters, setShowFilters] = useState(false)
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState(0)
   const [filters, setFilters] = useState({
     industry: "All",
     level: "All",
     country: "All",
     role: "All",
   })
+
+  const swipeHandlers = useSwipeable({
+    onSwiping: (e: SwipeEventData) => {
+      if (showCardBack) return; // Don't allow swiping when showing card back
+      setIsDragging(true);
+      setDragOffset(e.deltaX);
+    },
+    onSwiped: (e: SwipeEventData) => {
+      setIsDragging(false);
+      // Detect swipe direction based on velocity and distance
+      const threshold = 80; // minimum distance for a swipe
+      if (Math.abs(e.deltaX) > threshold) {
+        if (e.deltaX > 0) {
+          handleSwipe("right"); // Right swipe = like
+        } else {
+          handleSwipe("left"); // Left swipe = pass
+        }
+      } else {
+        // Reset if it wasn't a strong enough swipe
+        setDragOffset(0);
+      }
+    },
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+    trackTouch: true,
+    delta: 10, // minimum distance required before swipe recognized
+  });
 
   const filteredProfiles = profiles.filter((profile) => {
     const matchesSearch =
@@ -111,6 +142,8 @@ export default function NetworkingPage() {
   const currentProfile = filteredProfiles[currentCardIndex]
 
   const handleSwipe = (direction: "left" | "right") => {
+    setSwipeDirection(direction)
+
     if (direction === "right") {
       // Like action
       console.log("Liked:", currentProfile?.firstName)
@@ -119,8 +152,13 @@ export default function NetworkingPage() {
       console.log("Passed:", currentProfile?.firstName)
     }
 
-    setShowCardBack(false)
-    setCurrentCardIndex((prev) => (prev + 1) % filteredProfiles.length)
+    // Use setTimeout to allow the swipe animation to complete
+    setTimeout(() => {
+      setShowCardBack(false)
+      setCurrentCardIndex((prev) => (prev + 1) % filteredProfiles.length)
+      setSwipeDirection(null)
+      setDragOffset(0)
+    }, 300)
   }
 
   const updateFilter = (key: string, value: string) => {
@@ -259,9 +297,25 @@ export default function NetworkingPage() {
       {viewMode === "cards" && currentProfile && (
         <div className="px-4 py-8">
           <div className="max-w-sm mx-auto">
-            <div className="relative h-96 cursor-pointer" onClick={() => setShowCardBack(!showCardBack)}>
-              <Card className="absolute inset-0 border-0 shadow-2xl transform transition-transform duration-300 hover:scale-105">
-                <CardContent className="p-0 h-full">
+            <div 
+              className="relative h-96"
+              style={{
+                perspective: "1000px"
+              }}>
+              <Card 
+                key={currentProfile.id}
+                className={`absolute inset-0 border-0 shadow-2xl transform transition-all duration-300 
+                  ${swipeDirection === "left" ? "translate-x-[-200%] rotate-[-30deg]" : 
+                    swipeDirection === "right" ? "translate-x-[200%] rotate-[30deg]" : ""}
+                  ${!swipeDirection && isDragging ? "" : !swipeDirection ? "hover:scale-105" : ""}`}
+                style={{
+                  transform: isDragging ? `translateX(${dragOffset}px) rotate(${dragOffset * 0.1}deg)` : undefined,
+                  opacity: isDragging ? 1 - Math.min(0.5, Math.abs(dragOffset) / 500) : 1,
+                  transition: isDragging ? "none" : undefined
+                }}
+                {...swipeHandlers}>
+
+                <CardContent className="p-0 h-full" onClick={() => !isDragging && setShowCardBack(!showCardBack)}>
                   {!showCardBack ? (
                     // Front of card
                     <div className="h-full bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-lg p-6 flex flex-col justify-between">
