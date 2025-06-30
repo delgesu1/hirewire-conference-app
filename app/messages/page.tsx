@@ -574,9 +574,22 @@ export default function MessagesPage() {
     }
   }, [searchParams, setSelectedChat]);
 
+  // Scroll the chat view to the bottom when a chat is opened
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [selectedChat]);
+
+  // Ensure the page scroll position resets to the top when navigating back to the conversations list
+  useEffect(() => {
+    if (selectedChat === null) {
+      // Using a timeout to wait for the list view to render before scrolling
+      setTimeout(() => {
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+        }
+      }, 0);
     }
   }, [selectedChat]);
 

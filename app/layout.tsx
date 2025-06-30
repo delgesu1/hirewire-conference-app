@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Connect, learn, and grow at the UI/UX, Product & Data Conference",
   generator: 'v0.dev',
   manifest: "/manifest.json",
-  themeColor: "#ffffff",
+
   appleWebApp: {
     capable: true,
     title: "HireWire",
@@ -25,6 +25,11 @@ export const metadata: Metadata = {
     ],
     apple: "/placeholder-logo.png"
   }
+}
+
+// Moved themeColor to the new viewport export as per Next.js 15 API
+export const viewport = {
+  themeColor: "#ffffff",
 }
 
 export default function RootLayout({
